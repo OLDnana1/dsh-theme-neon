@@ -1,0 +1,4 @@
+# dsh-theme-cyberpunk bundle patch: 挂载 host 插件（占位），使 client 脚本被扫描注入。
+- insert:
+    - id: theme-cyberpunk
+      name: dsh-theme-cyberpunk
