@@ -1,41 +1,34 @@
-# dsh-theme-cyberpunk — 维护说明
+# dsh-theme-neon — DSH 霓虹主题
 
-> ⚠️ **主题互斥**：DSH 主题插件二选一。装本主题前，先在插件管理里**停用其他主题插件**（如 dsh-theme-wallpaper）。若同时启用，后加载者会自动让位（client 内置互斥自检），但视觉以先加载者为准。
+一个为 DeepSeek Harness（DSH）Web 界面打造的霓虹赛博主题插件。深紫黑的夜幕底色上，霓虹灯、雨幕与像素网格缓缓流动，让你的工作台变成一座雨夜的未来城市。
 
-DSH Web GUI 独立主题插件（KIRA 赛博朋克）。与 `dsh-theme-wallpaper` 互不依赖，二选一启用。
+## 主题特点
 
-## 最终版 v1.0.0（2026-08-17 定稿）
+- **霓虹氛围**：深紫黑渐变背景 + 透视霓虹网格 + 脉冲地平线 + 流转的赛博太阳 + 远景城市纵深 + 天际线（差异化闪烁的窗户）+ 悬浮霓虹广告招牌（各自独立闪烁）+ 雨幕 + CRT 扫描线 + 鼠标霓虹光点 + 品牌故障 glitch
+- **terminal 输入栏**：近黑不透底 + 青色霓虹描边 + 青色光标，输入时干净利落，不与背景内容重叠
+- **字体方案**：中文使用系统字体（清晰统一），英文/数字/代码使用赛博等宽字体（Cascadia Code / JetBrains Mono / Consolas）
+- **侧边栏终端状态条**：`● SYSTEM ONLINE // 实时时钟`，为界面注入终端质感
+- **轻量**：client 仅约 31KB，加载极快；面板透明度经 `--dsw-*` token 调透，背景层完整透出
 
-- **中文**（正文/标题/侧边栏/终端条）：系统字体（苹方/雅黑），清晰统一
-- **英文/数字/代码**：赛博等宽（Cascadia Code → JetBrains Mono → Consolas）
-- **输入栏**：terminal 风格（近黑不透底 + 青色霓虹描边 + 青色光标），输入时不与背景重叠
-- **霓虹氛围**：深紫黑背景 + 透视网格 + 霓虹地平线（脉冲）+ 赛博太阳（hue 流转）+ 远景纵深 + 城市天际线（差异化闪烁窗）+ 霓虹广告招牌（独立闪烁）+ 雨幕 + 扫描线 + 鼠标光点 + 品牌 glitch + 侧边栏终端状态条
-- **透明度**：全部面板经 --dsw-* token 调透（主区 0.20 / 气泡 0.32 / 侧边栏 0.30），招牌太阳透出
-- client.js 约 28KB，加载极快
+## 安装
 
-## 为什么中文不用像素字体（踩坑记录）
+1. 将本仓库目录（或解压后的 zip）放到任意位置
+2. 在你的 DSH 中执行：
+   ```
+   dshpm install <你的插件目录> --profile web
+   ```
+   （或在插件管理界面中安装）
+3. 重启 dsh web，页面刷新（Ctrl+F5）后生效
 
-1. **ark-pixel 16px 的 woff2 是位图字体**（含 CBDT 表）→ Chrome 不支持渲染位图字体，静默失败零报错；
-2. 16px/10px 的中文子集**覆盖残缺**（16px 仅 97 汉字、10px 仅 1076 字，"的/你/好/这/对话/系统"等高频字缺失）→ 混排参差；
-3. 12px 全量版（18299 汉字）覆盖完整，但**位图转矢量后渲染糊化**（笔画落像素边界产生抗锯齿，每字糊化不同 → 观感"字体不一样"），CSS 无法根除。
+## 使用说明
 
-结论：**中文像素字体在当前浏览器技术下不可用**，最终采用"中文系统 + 英文等宽"。
+> ⚠️ **主题互斥**：DSH 主题插件二选一。若已安装其他主题插件，请先在插件管理里将其停用，再启用本主题。若同时启用，后加载者会自动让位（client 内置互斥自检）。
 
-## 安装/更新要点（重要）
+## 适配版本
 
-- **安装**：`pnpm add file:<你的插件目录>/dsh-theme-cyberpunk` 后，必须把包名加进 profile `package.json` 的 `dsh.profile.bundles` 数组（否则 entry 显示 unmounted，client 不注入）；
-- **实体**：`node_modules/dsh-theme-cyberpunk` 已替换为 **junction** 指向源目录（`mklink /J`），改源文件即时可见，无需同步副本；
-- **生效**：改 client.js 后**必须重启 dsh web**（生产模式 client-modules 启动时扫描缓存，无 HMR watch）；
-- **切换主题**：插件管理里开关 `theme-wallpaper` / `theme-cyberpunk` entry 二选一；
-- **cordis.patch.yml**：只含 `theme-wallpaper disabled` 标记（插件管理器托管），勿手动改。
+- 适配 **DSH 0.1.0-rc.6**
+- 背景、配色、字体、透明度等核心效果与 DSH 版本无关；个别组件级效果（气泡描边、品牌 glitch 等）依赖 hash 类名，跨版本可能失效
 
-## 结构
+## License
 
-```
-dsh-theme-cyberpunk/
-├── package.json        # bundle 声明 + dsh.client
-├── index.mjs           # cordis 占位工厂
-├── cordis.patch.yml    # bundle 层 insert
-├── client/client.js    # 全部主题逻辑（CSS 注入 + 背景/终端条/光点）
-└── font/               # 字体归档（12px 全量 zip 等，供未来参考）
-```
+MIT
