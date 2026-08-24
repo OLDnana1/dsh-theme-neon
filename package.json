@@ -1,0 +1,24 @@
+{
+  "name": "dsh-theme-cyberpunk",
+  "description": "DSH Web GUI 独立主题插件：赛博朋克「霓虹夜行者」v1.0.0 最终版——深紫黑基底 + 霓虹青/品红，中文系统字体 + 英文赛博等宽，terminal 输入栏（与 dsh-theme-wallpaper 互不依赖，二选一启用）",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "license": "MIT"
+}
